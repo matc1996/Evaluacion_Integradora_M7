@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+</head>
+<body>
+    <h2>Bienvenido, <span th:text="${usuario.nombre}"></span></h2>
+    <h3>Saldo Disponible</h3>
+    <ul>
+        <li th:each="cuenta : ${cuentas}">
+            Cuenta ID: <span th:text="${cuenta.id}"></span>
+        </li>
+        <li>
+            Saldo: $<span th:text="${cuenta.saldo}"></span>
+        </li>
+    </ul>
+    <a th:href="@{/transacciones}">Realizar Transacciones</a>
+</body>
+</html>

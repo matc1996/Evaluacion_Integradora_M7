@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Transacciones</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h2>Realizar Transacción</h2>
+    <form id="formTransaccion">
+        <label for="cuentaOrigen">Cuenta Origen:</label>
+        <input type="text" id="cuentaOrigen" name="cuentaOrigen"><br><br>
+
+        <label for="cuentaDestino">Cuenta Destino:</label>
+        <input type="text" id="cuentaDestino" name="cuentaDestino"><br><br>
+
+        <label for="monto">Monto:</label>
+        <input type="number" id="monto" name="monto"><br><br>
+
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo">
+            <option value="1">Transferencia</option>
+            <option value="2">Pago</option>
+        </select><br><br>
+
+        <button type="button" onclick="realizarTransaccion()">Realizar Transacción</button>
+    </form>
+
+    <div id="resultado"></div>
+
+    <script>
+        function realizarTransaccion() {
+            var formData = {
+                cuentaOrigen: $('#cuentaOrigen').val(),
+                cuentaDestino: $('#cuentaDestino').val(),
+                monto: $('#monto').val(),
+                tipo: $('#tipo').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/api/transacciones",
+                data: JSON.stringify(formData),
+                dataType: 'json',
+                success: function (result) {
+                    $('#resultado').html('<p>Transacción realizada correctamente.</p>');
+                    limpiarFormulario(); // Opcional: limpiar el formulario después de la transacción
+                },
+                error: function (e) {
+                    $('#resultado').html('<p>Ocurrió un error al realizar la transacción.</p>');
+                }
+            });
+
+            // Evitar el envío del formulario
+            return false;
+        }
+
+        // Función para limpiar el formulario después de una transacción exitosa
+        function limpiarFormulario() {
+            $('#cuentaOrigen').val('');
+            $('#cuentaDestino').val('');
+            $('#monto').val('');
+            $('#tipo').val('1'); // Reiniciar el tipo a Transferencia
+        }
+    </script>
+</body>
+</html>
